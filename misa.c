@@ -3,14 +3,14 @@
 #include<string.h>
 #include<stdlib.h>
 
-struct Data_guru
-{
-    
+struct guru {
+    char userguru[100];
+    char passguru[100];
 };
 
-struct Data_siswa
-{
-
+struct siswa {
+    char usersiswa[100];
+    char passiswa[100];
 };
 
 void guru();
@@ -34,6 +34,7 @@ void guru(){
     printf("Pilih Menu : \n");
     printf("1. Registrasi Guru\n");
     printf("2. Login Guru\n");
+    printf("3. Keluar\n");
     printf("Silahkan pilih menu"); scanf("%d", &n);
     switch (n)
     {
@@ -42,6 +43,9 @@ void guru(){
         break;
     case 2:
         loginGuru();
+        break;
+    case 3:
+        main();
         break;
     default:
         printf("Pilihan tidak valid!! Silahkan direfresh ulang..");
@@ -72,11 +76,18 @@ void siswa(){
 }
 
 void regisGuru(){
+    struct guru regis;
     dataAkun_guru = fopen("dataAkun_guru.txt", "a");
 
     if ( dataAkun_guru == NULL ){
         printf("File tidak bisa dibuka");
     }
+
+    printf("Masukkan Username : "); gets(regis.userguru);
+    printf("Masukkan Password : "); gets(regis.passguru);
+
+    
+
 }
 
 void loginGuru(){
@@ -84,7 +95,7 @@ void loginGuru(){
 }
 
 void regisSiswa(){
-    dataAkun_siswa = fopen("dataAkun_siswa.txt", "ab");
+    dataAkun_siswa = fopen("dataAkun_siswa.txt", "a");
 
     
 
