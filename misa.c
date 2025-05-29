@@ -6,22 +6,22 @@
 struct guru {
     char userguru[100];
     char passguru[100];
-};
+} user, aktif;
 
 struct siswa {
     char usersiswa[100];
     char passiswa[100];
-};
+} murid, aseli;
 
 void guru();//aman
 void siswa();//aman
 void regisGuru();
-void loginGuru();
+int loginGuru(int attempt);
 void regisSiswa();
-void loginSiswa();
+int loginSiswa(int attempt);
 void menuGuru();
 void menuSiswa();
-
+int main();
 
 //file Guru
 FILE *dataAkun_guru;
@@ -30,19 +30,21 @@ FILE *dataAkun_siswa;
 void guru(){
     system("cls");
     int n;
+    int coba = 3;
+
     printf("Selamat datang beach!!\n");
     printf("Pilih Menu : \n");
     printf("1. Registrasi Guru\n");
     printf("2. Login Guru\n");
     printf("3. Keluar\n");
-    printf("Silahkan pilih menu"); scanf("%d", &n);
-    switch (n)
-    {
+    printf("Silahkan pilih menu : "); scanf("%d", &n);
+    getchar();
+    switch (n) {
     case 1:
         regisGuru();
         break;
     case 2:
-        loginGuru();
+        loginGuru(coba);
         break;
     case 3:
         main();
@@ -54,7 +56,8 @@ void guru(){
 
 }
 
-void siswa(){
+void siswa(){\
+    int coba = 3;
     system("cls");
     int n;
     printf("Selamat datang beach!!\n");
@@ -62,13 +65,14 @@ void siswa(){
     printf("1. Registrasi Siswa\n");
     printf("2. Login Siswa\n");
     printf("Silahkan pilih menu : "); scanf("%d", &n);
+    getchar();
     switch (n)
     {
     case 1:
         regisSiswa();
         break;
     case 2:
-        loginSiswa(); 
+        loginSiswa(coba); 
         break;
     default:
         break;
@@ -76,6 +80,8 @@ void siswa(){
 }
 
 void regisGuru(){
+    int n;
+    int coba = 3;
     struct guru regis;
     dataAkun_guru = fopen("dataAkun_guru.dat", "ab");
 
@@ -92,15 +98,67 @@ void regisGuru(){
     system("pause");
 
     fclose(dataAkun_guru);
-    main();
 
+    printf("\n");
+    
+    printf("1. Login Guru\n");
+    printf("2. Kembali ke Menu Utama\n");
+    printf("Pilih Menu : \n"); scanf("%d", &n);
+    getchar();
+    switch (n) {
+    case 1 :
+        loginGuru(coba);
+        break;
+    case 2 :
+        main();
+        break;
+    default:
+        printf("pilihan tidak valid, silahkan direfresh!!\n");
+        break;
+    }
 }
 
-void loginGuru(){
+int loginGuru(int attempt){
+    dataAkun_guru = fopen("dataAkun_guru.dat", "rb");
+    char usnguru[100], passguru[100];
 
+    printf("=== Silahkan Login ===\n");
+    printf("Masukkan Username Guru : "); gets(usnguru);
+    printf("Masukkan Password : "); gets(passguru);
+
+    while (fread(&user, sizeof(struct guru), 1, dataAkun_guru)) {
+        if (strcmp(user.userguru, usnguru) == 0 && strcmp(user.passguru, passguru) == 0) {
+            aktif = user;
+            printf("Selamat Datang %s di Pusat Pendataan SMA Ngawi!!\n", usnguru);
+            fclose(dataAkun_guru);
+            menuGuru;
+            return 0;
+        }
+    }
+
+    attempt--;
+    fclose(dataAkun_guru);
+
+    if (attempt > 0) {
+        system("cls");
+        printf("Username atau password salah, silahkan coba lagi!\n");
+        printf("Kesempatan anda tersisa %d \n", attempt);
+        system("pause");
+        system("cls");
+        loginGuru(attempt);
+    } else {
+        printf("Kesempatan anda sudah habis, silahkan refresh. \n");
+        system("pause");
+        system("cls");
+        main();
+    }
+    
 }
 
 void regisSiswa(){
+  
+    int n;
+    int coba = 3;
     struct siswa regis;
     dataAkun_siswa = fopen("dataAkun_siswa.dat", "a");
 
@@ -117,12 +175,60 @@ void regisSiswa(){
     system("pause");
 
     fclose(dataAkun_siswa);
-    main();
+    printf("1. Login Siswa\n");
+    printf("2. Kembali ke Menu Utama\n");
+    printf("Pilih Menu : \n"); scanf("%d", &n);
+    getchar();
+    switch (n)
+    {
+    case 1 :
+        loginSiswa(coba);
+        break;
+    case 2 :
+        main();
+        break;
+    default:
+        printf("pilihan tidak valid, silahkan direfresh!!\n");
+        break;
+    }
     
-
 }
 
-void loginSiswa(){
+int loginSiswa(int attempt){
+ 
+    dataAkun_siswa = fopen("dataAkun_siswa.dat", "rb");
+    char usnsiswa[100], passiswa[100];
+
+    printf("=== Silahkan Login ===\n");
+    printf("Masukkan Username Siswa : "); gets(usnsiswa);
+    printf("Masukkan Password : "); gets(passiswa);
+
+    while (fread(&murid, sizeof(struct siswa), 1, dataAkun_siswa)) {
+        if (strcmp(murid.usersiswa, usnsiswa) == 0 && strcmp(murid.passiswa, passiswa) == 0) {
+            aseli = murid;
+            printf("Selamat Datang %s di Pusat Pendataan SMA Ngawi!!\n", usnsiswa);
+            fclose(dataAkun_siswa);
+            menuSiswa();
+            return 0;
+        }
+    }
+
+    attempt--;
+    fclose(dataAkun_siswa);
+
+    if (attempt > 0) {
+        system("cls");
+        printf("Username atau password salah, silahkan coba lagi!\n");
+        printf("Kesempatan anda tersisa %d \n", attempt);
+        system("pause");
+        system("cls");
+        loginSiswa(attempt);
+    } else {
+        printf("Kesempatan anda sudah habis, silahkan refresh. \n");
+        system("pause");
+        system("cls");
+        main();
+    }
 
 }
 
@@ -142,6 +248,7 @@ int main(){
     printf("1. Guru\n");
     printf("2. Siswa\n");
     printf("Silahkan pilih user : "); scanf("%d", &pilihan);
+    getchar();
     switch (pilihan)
     {
     case 1:
