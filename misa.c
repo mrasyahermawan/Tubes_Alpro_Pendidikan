@@ -11,17 +11,22 @@ struct guru {
 struct siswa {
     char usersiswa[100];
     char passiswa[100];
+    char nama[100], alamat[100], ttl[100];
+    int nis;
 } murid, aseli;
 
 void guru();//aman
 void siswa();//aman
 void regisGuru();
-int loginGuru(int attempt);
+int loginGuru(int attempt); //aman
 void regisSiswa();
-int loginSiswa(int attempt);
+int loginSiswa(int attempt); //aman
 void menuGuru();
 void menuSiswa();
 int main();
+
+//fungsi siswa
+void lihatDiri();
 
 //file Guru
 FILE *dataAkun_guru;
@@ -64,6 +69,7 @@ void siswa(){\
     printf("Pilih Menu : \n");
     printf("1. Registrasi Siswa\n");
     printf("2. Login Siswa\n");
+    printf("3. Keluar\n");
     printf("Silahkan pilih menu : "); scanf("%d", &n);
     getchar();
     switch (n)
@@ -74,6 +80,8 @@ void siswa(){\
     case 2:
         loginSiswa(coba); 
         break;
+    case 3:
+        main();
     default:
         break;
     }
@@ -131,7 +139,7 @@ int loginGuru(int attempt){
             aktif = user;
             printf("Selamat Datang %s di Pusat Pendataan SMA Ngawi!!\n", usnguru);
             fclose(dataAkun_guru);
-            menuGuru;
+            menuGuru();
             return 0;
         }
     }
@@ -159,17 +167,21 @@ void regisSiswa(){
   
     int n;
     int coba = 3;
-    struct siswa regis;
     dataAkun_siswa = fopen("dataAkun_siswa.dat", "a");
 
     if ( dataAkun_siswa == NULL ){
         printf("File tidak bisa dibuka");
     }
 
-    printf("Masukkan Username : "); gets(regis.usersiswa);
-    printf("Masukkan Password : "); gets(regis.passiswa);
+    printf("Masukkan Username : "); gets(murid.usersiswa);
+    printf("Masukkan Password : "); gets(murid.passiswa);
+    printf("Nama Lengkap : "); gets(murid.nama);
+    printf("NIS :"); scanf("%d", &murid.nis);
+    getchar();
+    printf("Tempat Tanggal Lahir : "); gets(murid.ttl);
+    printf("Alamat Tempat Tinggal : "); gets(murid.alamat);
 
-     fwrite(&regis , sizeof(struct siswa), 1 , dataAkun_siswa);
+    fwrite(&murid , sizeof(struct siswa), 1 , dataAkun_siswa);
     printf("\n");
     printf("Akun berhasil ditambahkan!!\n");
     system("pause");
@@ -233,10 +245,62 @@ int loginSiswa(int attempt){
 }
 
 void menuGuru(){
+    int n;
+
+    printf("=== Menu Guru ===\n");
+    printf("1. Tambah Data Siswa \n");
+    printf("2. Lihat Data Siswa\n");
+    printf("3. Input Nilai Siswa\n");
+    printf("4. Cara Data Siswa\n");
+    printf("5. Statistik Nilai\n");
+    printf("6. Kembali ke Menu Utama\n");
+    printf("Pilih Menu : "); scanf("%d", &n);
+    getchar();
+
+    switch (n)
+    {
+    case 1:
+        /* code */
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
+        break;
+    case 6:
+        main();
+        break;
+    default:
+        break;
+    }
 
 }
 
 void menuSiswa(){
+    int n;
+
+    printf("=== Menu Siswa ===\n");
+    printf("1. Lihat Data Diri \n");
+    printf("2. Lihat Nilai\n");
+    printf("3. Kembali ke Menu Utama\n");
+    printf("Pilih Menu : "); scanf("%d", &n);
+    getchar();
+
+    switch (n)
+    {
+    case 1:
+        lihatDiri();
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    default:
+        break;
+    }
     
 }
 
@@ -247,6 +311,7 @@ int main(){
     printf("Selamat datang Civitas Akademia SMA Ngawi\n");
     printf("1. Guru\n");
     printf("2. Siswa\n");
+    printf("3. Keluar\n");
     printf("Silahkan pilih user : "); scanf("%d", &pilihan);
     getchar();
     switch (pilihan)
@@ -258,6 +323,7 @@ int main(){
         siswa();
         break;
     case 3:
+        printf("Terimakasih, Sampai jumpa kembali!!\n");
         exit(0);
         break;
     default:
@@ -265,3 +331,27 @@ int main(){
         break;
     }
 }
+
+void lihatDiri() {
+    system("cls");
+    dataAkun_siswa = fopen("dataAkun_siswa.dat", "rb");
+
+    if(dataAkun_siswa == NULL) {
+        printf("File tidak ditemukan!\n");
+        return;
+    }
+    printf("=== Data Diri %s ===", aseli.usersiswa);
+    while (fread(&murid, sizeof(struct siswa), 1 , dataAkun_siswa)) {
+        printf("Nama Lengkap : %s \n", aseli.nama);
+        printf("NIS : %d \n", aseli.nis);
+        printf("Alamat : %s \n", aseli.alamat);
+        printf("Tempat Tanggal Lahir : %s \n", aseli.ttl);
+    }
+    fclose(dataAkun_siswa);
+    printf("\n");
+
+    printf("Tekan enter untuk kembali ke menu siswa...\n");
+    system("pause");
+    system("cls");
+    menuSiswa();
+}   
