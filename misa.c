@@ -13,8 +13,8 @@ struct siswa {
     char passiswa[100];
 };
 
-void guru();
-void siswa();
+void guru();//aman
+void siswa();//aman
 void regisGuru();
 void loginGuru();
 void regisSiswa();
@@ -61,7 +61,7 @@ void siswa(){
     printf("Pilih Menu : \n");
     printf("1. Registrasi Siswa\n");
     printf("2. Login Siswa\n");
-    printf("Silahkan pilih menu"); scanf("%d", &n);
+    printf("Silahkan pilih menu : "); scanf("%d", &n);
     switch (n)
     {
     case 1:
@@ -77,16 +77,22 @@ void siswa(){
 
 void regisGuru(){
     struct guru regis;
-    dataAkun_guru = fopen("dataAkun_guru.txt", "a");
+    dataAkun_guru = fopen("dataAkun_guru.dat", "ab");
 
     if ( dataAkun_guru == NULL ){
         printf("File tidak bisa dibuka");
     }
-
+    getchar();
     printf("Masukkan Username : "); gets(regis.userguru);
     printf("Masukkan Password : "); gets(regis.passguru);
 
-    
+    fwrite(&regis , sizeof(struct guru), 1 , dataAkun_guru);
+    printf("\n");
+    printf("Akun berhasil ditambahkan!!\n");
+    system("pause");
+
+    fclose(dataAkun_guru);
+    main();
 
 }
 
@@ -95,8 +101,23 @@ void loginGuru(){
 }
 
 void regisSiswa(){
-    dataAkun_siswa = fopen("dataAkun_siswa.txt", "a");
+    struct siswa regis;
+    dataAkun_siswa = fopen("dataAkun_siswa.dat", "a");
 
+    if ( dataAkun_siswa == NULL ){
+        printf("File tidak bisa dibuka");
+    }
+
+    printf("Masukkan Username : "); gets(regis.usersiswa);
+    printf("Masukkan Password : "); gets(regis.passiswa);
+
+     fwrite(&regis , sizeof(struct siswa), 1 , dataAkun_siswa);
+    printf("\n");
+    printf("Akun berhasil ditambahkan!!\n");
+    system("pause");
+
+    fclose(dataAkun_siswa);
+    main();
     
 
 }
