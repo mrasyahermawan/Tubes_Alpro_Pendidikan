@@ -2,4 +2,7 @@
     "workbench.colorTheme": "Tokyo Night",
     "workbench.iconTheme": "material-icon-theme",
     "vscode-pets.theme": "winter",
+    "files.associations": {
+        "string.h": "c"
+    },
 }
