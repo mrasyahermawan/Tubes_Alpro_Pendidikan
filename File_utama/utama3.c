@@ -315,7 +315,7 @@ void guru() {
     int n;
     int coba = 3;
 
-    printf("Selamat datang beach!!\n");
+    printf("Selamat datang Guru SMA Ngawi\n");
     printf("Pilih Menu : \n");
     printf("1. Registrasi Guru\n");
     printf("2. Login Guru\n");
