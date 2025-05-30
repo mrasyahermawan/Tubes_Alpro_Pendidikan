@@ -2,11 +2,6 @@
 #include<stdbool.h>
 #include<string.h>
 #include<stdlib.h>
-#include<ctype.h>
-
-#define MAX_MAHASISWA 100
-#define MAX_NAMA 50
-#define MAX_PASSWORD 20
 
 struct guru {
     char userguru[100];
@@ -22,12 +17,12 @@ struct siswa {
 
 struct Mahasiswa {
     char nis[20];
-    char nama[MAX_NAMA];
+    char nama[50];
     float nilai;
 };
 
 struct Database {
-    struct Mahasiswa data[MAX_MAHASISWA];
+    struct Mahasiswa data[100];
     int jumlah;
 };
 
@@ -56,7 +51,7 @@ void initDatabase(struct Database *db) {
 }
 
 void tambahMahasiswa(struct Database *db) {
-    if (db->jumlah >= MAX_MAHASISWA) {
+    if (db->jumlah >= 100) {
         printf("Database penuh! Tidak bisa menambah data lagi.\n");
         return;
     }
@@ -67,6 +62,7 @@ void tambahMahasiswa(struct Database *db) {
     
     printf("Masukkan NIS: ");
     scanf("%s", mhs.nis);
+    getchar(); // Membersihkan buffer
     
     for (int i = 0; i < db->jumlah; i++) {
         if (strcmp(db->data[i].nis, mhs.nis) == 0) {
@@ -76,7 +72,8 @@ void tambahMahasiswa(struct Database *db) {
     }
     
     printf("Masukkan Nama: ");
-    scanf(" %[^\n]s", mhs.nama);
+    fgets(mhs.nama, 50, stdin);
+    mhs.nama[strcspn(mhs.nama, "\n")] = 0; // Menghapus newline
     
     printf("Masukkan Nilai: ");
     scanf("%f", &mhs.nilai);
@@ -433,13 +430,12 @@ void menuGuru() {
         menuGuru();
         break;
     case 2:
-        // Belum diimplementasikan
         printf("Fitur Lihat Data Siswa belum diimplementasikan.\n");
         system("pause");
         menuGuru();
         break;
     case 3:
-        tambahMahasiswa(&db); // Input nilai dianggap sama dengan tambah data
+        tambahMahasiswa(&db);
         simpanKeFile(&db);
         system("pause");
         menuGuru();
