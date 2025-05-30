@@ -342,7 +342,7 @@ void siswa() {
     int coba = 3;
     system("cls");
     int n;
-    printf("Selamat datang beach!!\n");
+    printf("Selamat datang Siswa SMA Ngawi\n");
     printf("Pilih Menu : \n");
     printf("1. Login Siswa\n");
     printf("2. Keluar\n");
